@@ -14,12 +14,12 @@ read COMAND
 
 function GET_REPO {
     read BRANCH
-    if [ "$BRANCH" = "$QA_REPO" ]; then
-        return $(($QA_REPO))
-    elif [ "$BRANCH" = "$DEMO_REPO" ]; then
-        return $(($DEMO_REPO))
-    elif [ "$BRANCH" = "$PROD_REPO" ]; then
-        return $(($PROD_REPO))
+    if [ "$BRANCH" = "qa" ]; then
+        echo "$QA_REPO"
+    elif [ "$BRANCH" = "demo" ]; then
+        echo "$DEMO_REPO"
+    elif [ "$BRANCH" = "prod" ]; then
+        echo "$PROD_REPO"
     fi
 }
 
@@ -35,7 +35,9 @@ move)
     echo -e "\033[33mTo:(qa/demo/prod)"
     TO=$(GET_REPO)
     CURRENT_BRANCH=$($USE_GIT rev-parse --abbrev-ref HEAD)
-    $USE_GIT push $TO $CURRENT_BRANCH
-    $USE_GIT branch -D $CURRENT_BRANCH
+    $USE_GIT pull --rebase origin $TO
+    $USE_GIT push --set-upstream origin $CURRENT_BRANCH
+    $USE_GIT checkout $TO
+    $USE_GIT branch -d $CURRENT_BRANCH
     ;;
 esac
