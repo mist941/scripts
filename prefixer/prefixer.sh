@@ -36,6 +36,12 @@ for entry in "$search_dir"/*; do
     file_path=$(dirname "$entry")
     file_name=$(basename "$entry")
     new_name="${file_path}/${prefix}${file_name}"
+
+    if [[ -e "$new_name" ]]; then
+      echo "Warning: '$new_name' already exists. Skipping."
+      continue
+    fi
+
     mv "$entry" "$new_name"
     echo "Renamed: '$entry' → '$new_name'"
   fi
