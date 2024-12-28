@@ -7,7 +7,6 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-# Перевіряємо рівень зайнятого простору
 if (( usage_in_percents >= 80 )); then
     echo "Warning: Disk space usage is ${usage_in_percents}%, which exceeds the limit!"
 else
